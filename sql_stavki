@@ -1,0 +1,44 @@
+
+CREATE TABLE klasifikacija(  
+   id SERIAL PRIMARY KEY, 
+   ime TEXT NOT NULL UNIQUE
+);
+CREATE TABLE nivoji(
+   id_podskupine INTEGER REFERENCES klasifikacija(id),
+   id_nadskupine INTEGER REFERENCES klasifikacija(id)
+); 
+CREATE TABLE države(
+   id SERIAL PRIMARY KEY, 
+   ime TEXT NOT NULL UNIQUE
+); 
+CREATE TABLE gibanje_cen(
+   leto INTEGER NOT NULL,
+   izdelek TEXT NOT NULL, 
+   id_skupine INTEGER REFERENCES klasifikacija(id), 
+   gibanje_cene NUMERIC
+); 
+CREATE TABLE inflacija(
+   leto INTEGER NOT NULL, 
+   id_drzave INTEGER REFERENCES države(id), 
+   inflacija_stopnja NUMERIC 
+); 
+DROP TABLE nivoji;
+CREATE TABLE nivoji(
+   id_podskupine INTEGER REFERENCES klasifikacija(id),
+   id_nadskupine INTEGER REFERENCES klasifikacija(id)
+   CHECK(id_podskupine <>id_nadskupine)
+); 
+CREATE TABLE hiczp(
+   leto INTEGER NOT NULL,
+   skupina_id INTEGER REFERENCES klasifikacija(id), 
+   id_drzave INTEGER REFERENCES države(id),
+   utezi NUMERIC, 
+   harmoniziran_indeks NUMERIC
+)
+
+CREATE TABLE utezi_in_letni_indeks(
+   leto INTEGER NOT NULL,
+   skupina_id INTEGER REFERENCES klasifikacija(id), 
+   utezi NUMERIC, 
+   letni_iczp NUMERIC
+)
