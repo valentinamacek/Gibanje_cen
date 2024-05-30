@@ -53,7 +53,7 @@ class gibanje_cenDto:
 
 @dataclass_json
 @dataclass
-class države: 
+class drzava: 
     id : int = field(default=0) 
     ime : str = field(default="")
 
@@ -73,3 +73,26 @@ class hiczp:
     utezi: float = field(default=0)
     harmoniziran_indeks: float = field(default=0)
 
+@dataclass_json
+@dataclass
+class hiczpDto: 
+    leto : int = field(default=0)  
+    skupina_id : int = field(default=0)
+    ime_skupine: str = field(default="")
+    id_drzave : int = field(default=0)
+    ime_drzave: str = field(default="")
+    utezi: float = field(default=0)
+    harmoniziran_indeks: float = field(default=0)
+
+@dataclass_json
+@dataclass
+class Uporabnik:
+    username: str = field(default="")
+    role: str = field(default="")
+    password_hash: str = field(default="")
+    last_login: str = field(default="")
+
+@dataclass
+class UporabnikDto:
+    username: str = field(default="")
+    role: str = field(default="")

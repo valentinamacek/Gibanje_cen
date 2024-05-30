@@ -42,3 +42,39 @@ CREATE TABLE utezi_in_letni_indeks(
    utezi NUMERIC, 
    letni_iczp NUMERIC
 )
+
+
+DROP TABLE inflacija;
+
+DROP TABLE hiczp;
+
+DROP TABLE države; 
+
+-- ta prave za hiczp, inflacijo, drzave: 
+
+CREATE TABLE drzava(
+   id SERIAL PRIMARY KEY, 
+   ime TEXT NOT NULL UNIQUE
+); 
+
+CREATE TABLE inflacija(
+   leto INTEGER NOT NULL, 
+   id_drzave INTEGER REFERENCES drzava(id), 
+   inflacija_stopnja NUMERIC 
+); 
+
+CREATE TABLE hiczp(
+   leto INTEGER NOT NULL,
+   skupina_id INTEGER REFERENCES klasifikacija(id), 
+   id_drzave INTEGER REFERENCES drzava(id),
+   utezi NUMERIC, 
+   harmoniziran_indeks NUMERIC
+)
+
+CREATE TABLE uporabniki(
+   username TEXT NOT NULL,
+   role TEXT NOT NULL,
+   password_hash TEXT NOT NULL,
+   last_login TEXT
+   )
+
