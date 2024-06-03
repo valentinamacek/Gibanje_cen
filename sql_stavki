@@ -78,3 +78,8 @@ CREATE TABLE uporabniki(
    last_login TEXT
    )
 
+INSERT INTO utezi_in_letni_indeks(leto, skupina_id, utezi, letni_iczp)
+VALUES (2005, 1, 18.0, 100.7 )
+
+INSERT INTO klasifikacija(id, ime)
+VALUES (1, '01 HRANA IN BREZALKOHOLNE PIJAČE')

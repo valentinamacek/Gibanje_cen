@@ -61,13 +61,17 @@ class Repo:
         self.conn.commit()
 
     def dobi_uporabnika(self, username:str) -> Uporabnik:
+        self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         self.cur.execute("""
             SELECT username, role, password_hash, last_login
             FROM uporabniki
             WHERE username = %s
         """, (username,))
-         
-        u = Uporabnik.from_dict(self.cur.fetchone())
+        r = self.cur.fetchone()
+        if r is None: 
+           return None 
+        else: 
+           u = Uporabnik.from_dict(self.cur.fetchone())
         return u
     
     def posodobi_uporabnika(self, uporabnik: Uporabnik):

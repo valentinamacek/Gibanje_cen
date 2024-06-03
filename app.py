@@ -2,12 +2,14 @@ from functools import wraps
 from Presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
 import os
 
+from Services.cene_service import CeneService 
 from Services.auth_service import AuthService
 
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', True)
 
 auth = AuthService()
+service = CeneService()
 
 def cookie_required(f):
     """
@@ -25,7 +27,9 @@ def cookie_required(f):
 @get('/')
 @cookie_required
 def index(): 
-    return template_user('home.html')
+
+    iczpji = service.dobi_iczp()
+    return template_user('home.html', iczpji=iczpji)
 
 
 
@@ -38,8 +42,8 @@ def prijava():
     username = request.forms.get('username')
     password = request.forms.get('password')
 
-    if not auth.obstaja_uporabnik(username):
-        return template("prijava.html", napaka="Uporabnik s tem imenom ne obstaja")
+    # if not auth.obstaja_uporabnik(username):
+    #     return template("prijava.html", napaka="Uporabnik s tem imenom ne obstaja")
 
     prijava = auth.prijavi_uporabnika(username, password)
     if prijava:

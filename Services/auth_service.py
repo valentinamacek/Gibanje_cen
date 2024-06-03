@@ -22,6 +22,10 @@ class AuthService:
         # Najprej dobimo uporabnika iz baze
         user = self.repo.dobi_uporabnika(uporabnik)
 
+        if user is None: 
+            self.repo.dodaj_uporabnika(Uporabnik(uporabnik, role=None, g))
+        
+
         geslo_bytes = geslo.encode('utf-8')
         # Ustvarimo hash iz gesla, ki ga je vnesel uporabnik
         succ = bcrypt.checkpw(geslo_bytes, user.password_hash.encode('utf-8'))

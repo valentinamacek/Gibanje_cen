@@ -1,4 +1,34 @@
 %rebase('base.html')
 <h1> 
-    Prikaži tabele: 
+    Uteži in letni indeks cen življenjskih potrebščin
 </h1>
+<div style="display: flex;">
+
+    <div style="flex:1;">
+      <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Leto</th>
+                <th>Skupina_id</th>
+                <th>Uteži</th>  
+                <th>Letni_iczp</th>     
+             </tr>
+        </thead>
+     
+      %for iczp in iczpji:
+        <tr>
+           <td>{{iczp.leto}}</td>           
+           <td>{{iczp.skupina_id}}</td>
+           <td>{{iczp.utezi}}</td>
+           <td>{{iczp.letni_iczp}}</td>
+     
+        </tr>
+      %end
+      </table>
+
+
+
+    </div>    
+
+    </div>
