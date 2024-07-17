@@ -67,11 +67,8 @@ class Repo:
             FROM uporabniki
             WHERE username = %s
         """, (username,))
-        r = self.cur.fetchone()
-        if r is None: 
-           return None 
-        else: 
-           u = Uporabnik.from_dict(self.cur.fetchone())
+
+        u = Uporabnik.from_dict(self.cur.fetchone())
         return u
     
     def posodobi_uporabnika(self, uporabnik: Uporabnik):

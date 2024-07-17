@@ -22,8 +22,8 @@ class AuthService:
         # Najprej dobimo uporabnika iz baze
         user = self.repo.dobi_uporabnika(uporabnik)
 
-        if user is None: 
-            self.repo.dodaj_uporabnika(Uporabnik(uporabnik, role=None, g))
+        # if user is None: 
+        #     self.repo.dodaj_uporabnika(Uporabnik(uporabnik, role=None, g))
         
 
         geslo_bytes = geslo.encode('utf-8')

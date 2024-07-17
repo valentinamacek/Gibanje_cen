@@ -42,8 +42,8 @@ def prijava():
     username = request.forms.get('username')
     password = request.forms.get('password')
 
-    # if not auth.obstaja_uporabnik(username):
-    #     return template("prijava.html", napaka="Uporabnik s tem imenom ne obstaja")
+    if not auth.obstaja_uporabnik(username):
+        auth.dodaj_uporabnika(username, 'visitor', password)
 
     prijava = auth.prijavi_uporabnika(username, password)
     if prijava:
@@ -62,7 +62,7 @@ def prijava():
         return template("prijava.html", uporabnik=None, rola=None, napaka="Neuspešna prijava. Napačno geslo ali uporabniško ime.")
 
 
-
+auth.dodaj_uporabnika('vale', 'admin', 'izzy')
 
 
 @get('/static/<filename:path>')
