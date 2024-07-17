@@ -9,7 +9,10 @@ from datetime import datetime
 class klasifikacija: 
     id : int = field(default=0)  # Za vsako polje povemo tip in privzeto vrednost
     ime : str = field(default="")
-
+    ang_ime: str = field(default="")
+    sifra: str = field(default="")
+    raven: int = field(default=0)
+    
 @dataclass_json
 @dataclass
 class nivoji: 

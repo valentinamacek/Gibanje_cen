@@ -15,15 +15,38 @@ class Repo:
       self.conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
       self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     
-    def dobi_skupino(self, id_skupine: int) -> klasifikacija:
+    def dobi_skupino_iz_id(self, id_skupine: int) -> klasifikacija:
         self.cur.execute("""
-            SELECT id, ime
+            SELECT id, ime, ang_ime, sifra, raven
             FROM klasifikacija
             WHERE id = %s
         """, (id_skupine,))
         s = klasifikacija.from_dict(self.cur.fetchone())
         return s 
+
+    def dobi_skupino_iz_sifre(self, sifra: str) -> klasifikacija: 
+        self.cur.execute("""
+            SELECT id, ime, ang_ime, sifra, raven
+            FROM klasifikacija
+            WHERE sifra = %s
+        """, (sifra,))
+        s = klasifikacija.from_dict(self.cur.fetchone())
+        return s 
+
+    def dodaj_klas(self, klas: klasifikacija):
+        self.cur.execute("""
+            INSERT into klasifikacija(ime, ang_ime, sifra, raven)
+            VALUES (%s, %s, %s, %s)
+            """, (klas.ime, klas.ang_ime, klas.sifra, klas.raven))
+        self.conn.commit()
     
+    def dodaj_nivo(self, nivoji: nivoji): 
+        self.cur.execute("""
+            INSERT into nivoji(id_podskupine, id_nadskupine)
+            VALUES (%s, %s)
+            """, (nivoji.id_podskupine, nivoji.id_nadskupine))
+        self.conn.commit()
+
     #def dobi_visji_nivo_skupine(self) -> kaj ce ga nima?
     def dobi_utezi_in_letne_indekse(self) -> List[utezi_in_letni_indeks]:
         self.cur.execute("""
