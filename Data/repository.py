@@ -76,6 +76,17 @@ class Repo:
         u_iczp = [utezi_in_letni_indeks.from_dict(t) for t in self.cur.fetchall()]
         return u_iczp
         
+    def dodaj_utez_in_letni_indeks(self, uil: utezi_in_letni_indeks): 
+        if uil.utezi == '': 
+            uil.utezi = None
+        if uil.letni_iczp == '': 
+            uil.letni_iczp = None 
+        self.cur.execute("""
+            INSERT into utezi_in_letni_indeks(leto, skupina_id, utezi, letni_iczp)
+            VALUES (%s, %s, %s, %s)
+            """, (uil.leto, uil.skupina_id, uil.utezi, uil.letni_iczp))
+        self.conn.commit()
+
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
             INSERT into uporabniki(username, role, password_hash, last_login)
