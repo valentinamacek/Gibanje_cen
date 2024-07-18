@@ -35,9 +35,9 @@ class Repo:
 
     def dodaj_klas(self, klas: klasifikacija):
         self.cur.execute("""
-            INSERT into klasifikacija(ime, ang_ime, sifra, raven)
-            VALUES (%s, %s, %s, %s)
-            """, (klas.ime, klas.ang_ime, klas.sifra, klas.raven))
+            INSERT into klasifikacija(id, ime, ang_ime, sifra, raven)
+            VALUES (%s, %s, %s, %s, %s)
+            """, (klas.id, klas.ime, klas.ang_ime, klas.sifra, klas.raven))
         self.conn.commit()
     
     def dodaj_nivo(self, nivoji: nivoji): 
