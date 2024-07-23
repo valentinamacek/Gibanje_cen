@@ -1,13 +1,13 @@
 import pandas as pd
 import numpy as np
 from Data.repository import Repo
-from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks
+from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, drzava, inflacija
 
 repo = Repo()
 
 df = pd.read_excel('Data\ecoicop_klasifikacija.xlsx')
 
-print(df.head())
+# print(df.head())
 
 data = df.to_numpy()
 
@@ -32,6 +32,7 @@ dfind = pd.read_excel('Data\\utezi_in_letni_iczp.xlsx')
 
 
 dfind.replace(to_replace="...", value='', inplace=True)
+dfind.replace(to_replace="-", value='', inplace=True)
 
 data_ind=dfind.to_numpy()
 
@@ -68,4 +69,40 @@ def uvoz_v_utezi_in_letni_indeks(data):
             stevec +=1 
 
             
-uvoz_v_utezi_in_letni_indeks(data_ind[27: k-18])
+# uvoz_v_utezi_in_letni_indeks(data_ind[: k-18])
+
+dfinf = pd.ExcelFile('Data\\inflacija_n.xlsx')
+
+data_inf = pd.read_excel(dfinf, 'Sheet 1')
+
+data_inf = data_inf.to_numpy() 
+
+
+def uvoz_v_tabelo_inflacija(data) : 
+   
+    for i,el in enumerate(data_inf):
+        if 'TIME'==el[0]: 
+            leta = el 
+            ind = i 
+            break 
+    
+#ind ind+1 Cr: ind+2 It: ind+3 Hu: ind+4 Au: ind+5 Sl: ind+6 
+    id_drzave = 0
+    for i in range(ind+2, ind+7): 
+        id_drzave +=1
+        vrstica_drzave = data[i]
+        ime_drzave = vrstica_drzave[0]
+        repo.dodaj_drzavo(drzava(id=id_drzave, ime=ime_drzave))
+        j=0
+        for infl in vrstica_drzave[1:]: 
+            j +=1 
+            if not pd.isna(infl) and infl != 'd': 
+                leto = int(leta[j][ :4])
+                indeks_infl = infl + 100 
+                repo.dodaj_ind_inflacije(inflacija(leto=leto, id_drzave=id_drzave, indeks_inflacije=indeks_infl))
+
+              
+#uvoz_v_tabelo_inflacija(data_inf)
+
+
+

@@ -65,7 +65,7 @@ class drzava:
 class inflacija: 
     leto : int = field(default=0) 
     id_drzave : int = field(default=0)
-    inflacija_stopnja: float = field(default=0)
+    indeks_inflacije: float = field(default=0)
 
 @dataclass_json
 @dataclass

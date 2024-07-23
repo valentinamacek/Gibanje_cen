@@ -87,6 +87,20 @@ class Repo:
             """, (uil.leto, uil.skupina_id, uil.utezi, uil.letni_iczp))
         self.conn.commit()
 
+    def dodaj_drzavo(self, drzava: drzava): 
+        self.cur.execute("""
+            INSERT into drzava(id, ime)
+            VALUES (%s, %s)
+            """, (drzava.id, drzava.ime))
+        self.conn.commit()
+    
+    def dodaj_ind_inflacije(self, inflacija: inflacija): 
+        self.cur.execute("""
+            INSERT into inflacija(leto, id_drzave, indeks_inflacije)
+            VALUES (%s, %s, %s)
+            """, (inflacija.leto, inflacija.id_drzave, inflacija.indeks_inflacije))
+        self.conn.commit()
+
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
             INSERT into uporabniki(username, role, password_hash, last_login)
