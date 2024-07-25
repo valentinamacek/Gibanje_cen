@@ -39,20 +39,18 @@ class utezi_in_letni_indeksDto:
 
 @dataclass_json
 @dataclass
-class gibanje_cen: 
-    leto : int = field(default=0) 
-    izdelek: str = field(default="") 
-    id_skupine : int = field(default=0)
-    gibanje_cene: float = field(default=0)
+class izdelek: 
+    id : int = field(default=0)  
+    ime : str = field(default="")
+    id_skupine: int=field(default=0)
 
 @dataclass_json
 @dataclass
-class gibanje_cenDto: 
+class gibanje_cen: 
     leto : int = field(default=0) 
-    izdelek: str = field(default="") 
-    id_skupine : int = field(default=0)
-    ime_skupine: str = field(default="")
-    gibanje_cene: float = field(default=0)
+    id_izdelka: int = field(default=0)
+    cena: float = field(default=0)
+
 
 @dataclass_json
 @dataclass

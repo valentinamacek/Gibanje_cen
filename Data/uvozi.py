@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from Data.repository import Repo
-from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, drzava, inflacija
+from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, drzava, inflacija, izdelek, gibanje_cen
 
 repo = Repo()
 
@@ -103,6 +103,40 @@ def uvoz_v_tabelo_inflacija(data) :
 
               
 #uvoz_v_tabelo_inflacija(data_inf)
+dfcene = pd.read_excel('Data\\povprecne_cene.xlsx')
 
+data_cene = dfcene.to_numpy()
 
+print(data_cene[:30])
 
+# print(data_cene[2])
+
+def uvoz_v_tabelo_gibanje_cen(data): 
+    leta = data[2][1: ]
+    skupina = 0
+    stevec = 1
+    for vrstica in data[3:]: 
+        if vrstica[0] == 'DRUGI IZDELKI IN STORITVE': 
+            break
+        elif vrstica[0].startswith("..."): 
+            ime_izdelka = vrstica[0].replace("...", "")
+            repo.dodaj_izdelek(izdelek(id=stevec, ime=ime_izdelka, id_skupine=skupina))
+            for i,cena in enumerate(vrstica[1:]):
+                leto = int(leta[i])
+                repo.dodaj_ceno(gibanje_cen(leto=leto, id_izdelka=stevec, cena=cena))
+            stevec +=1
+        else: 
+            sifra, ime =vrstica[0].split(' ',1)
+            sk = repo.dobi_skupino_iz_sifre(sifra)
+            skupina = sk.id 
+            
+uvoz_v_tabelo_gibanje_cen(data_cene)
+
+# def dobi_skupino_ali_ne(stri): 
+#     try: 
+#         sk = repo.dobi_skupino_iz_sifre(stri)
+#         return sk 
+#     except AttributeError: 
+#         return None 
+
+# dobi_skupino_ali_ne('13')

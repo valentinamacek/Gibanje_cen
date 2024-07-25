@@ -63,6 +63,9 @@ CREATE TABLE inflacija(
    inflacija_stopnja NUMERIC 
 ); 
 
+ALTER TABLE inflacija 
+RENAME COLUMN inflacija_stopnja TO indeks_inflacije;
+
 CREATE TABLE hiczp(
    leto INTEGER NOT NULL,
    skupina_id INTEGER REFERENCES klasifikacija(id), 
@@ -100,3 +103,17 @@ ADD raven INTEGER;
 
 INSERT INTO klasifikacija(ime, ang_ime, sifra, raven)
 VALUES('SKUPAJ', 'TOTAL', '0' ,1);
+
+DROP TABLE gibanje_cen; 
+
+CREATE TABLE izdelki(
+    id SERIAL PRIMARY KEY,
+    ime TEXT NOT NULL, 
+    id_skupine INTEGER REFERENCES klasifikacija(id)
+)
+
+CREATE TABLE gibanje_cen(
+    leto INTEGER NOT NULL,
+    id_izdelka INTEGER REFERENCES izdelki(id), 
+    cena NUMERIC
+)

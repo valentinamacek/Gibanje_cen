@@ -3,7 +3,7 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 import Data.auth_public as auth
 import os
 
-from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, utezi_in_letni_indeksDto, gibanje_cen, gibanje_cenDto, drzava, inflacija, hiczp, hiczpDto, Uporabnik, UporabnikDto
+from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, utezi_in_letni_indeksDto, gibanje_cen, izdelek, drzava, inflacija, hiczp, hiczpDto, Uporabnik, UporabnikDto
 from typing import List 
 
 DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
@@ -100,6 +100,24 @@ class Repo:
             VALUES (%s, %s, %s)
             """, (inflacija.leto, inflacija.id_drzave, inflacija.indeks_inflacije))
         self.conn.commit()
+
+    def dodaj_izdelek(self, izdelek:izdelek): 
+        self.cur.execute("""
+            INSERT into izdelki(id, ime, id_skupine)
+            VALUES (%s, %s, %s)
+            """, (izdelek.id, izdelek.ime, izdelek.id_skupine))
+        self.conn.commit()
+
+    def dodaj_ceno(self, cena:gibanje_cen):
+        if cena.cena == '-' : 
+           cena.cena = None 
+        self.cur.execute("""
+            INSERT into gibanje_cen(leto, id_izdelka, cena)
+            VALUES (%s, %s, %s)
+            """, (cena.leto, cena.id_izdelka, cena.cena))
+        self.conn.commit()
+
+
 
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
