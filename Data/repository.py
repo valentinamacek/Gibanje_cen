@@ -33,6 +33,22 @@ class Repo:
         s = klasifikacija.from_dict(self.cur.fetchone())
         return s 
 
+    def dobi_skupino_iz_ang_imena(self, ang_ime: str) -> List[klasifikacija]: 
+        self.cur.execute("""
+            SELECT id, ime, ang_ime, sifra, raven
+            FROM klasifikacija
+            WHERE ang_ime = %s
+        """, (ang_ime,))
+        skji = [klasifikacija.from_dict(t) for t in self.cur.fetchall()]
+        if skji == []: 
+            self.cur.execute("""
+            SELECT id, ime, ang_ime, sifra, raven
+            FROM klasifikacija
+            WHERE ang_ime = %s
+            """, (ang_ime.upper(),))
+            skji = [klasifikacija.from_dict(t) for t in self.cur.fetchall()]
+        return skji 
+
     def dodaj_klas(self, klas: klasifikacija):
         self.cur.execute("""
             INSERT into klasifikacija(id, ime, ang_ime, sifra, raven)
@@ -86,6 +102,28 @@ class Repo:
             VALUES (%s, %s, %s, %s)
             """, (uil.leto, uil.skupina_id, uil.utezi, uil.letni_iczp))
         self.conn.commit()
+    
+    def dodaj_hiczp(self, hiczp: hiczp): 
+        self.cur.execute("""
+            INSERT into hiczp(leto, skupina_id, id_drzave, utezi, harmoniziran_indeks)
+            VALUES (%s, %s, %s, %s, %s)
+            """, (hiczp.leto, hiczp.skupina_id, hiczp.id_drzave, hiczp.utezi, hiczp.harmoniziran_indeks))
+        self.conn.commit()
+    
+    def dodaj_utez(self, hiczp: hiczp): 
+        self.cur.execute("""
+            UPDATE hiczp
+            SET utezi=%s
+            WHERE leto=%s
+            AND skupina_id=%s 
+            AND id_drzave=%s
+            """, [hiczp.utezi, hiczp.leto, hiczp.skupina_id, hiczp.id_drzave])
+        self.conn.commit()
+
+    # UPDATE table_name
+    # SET column1 = value1, column2 = value2, ...
+    # WHERE condition;
+
 
     def dodaj_drzavo(self, drzava: drzava): 
         self.cur.execute("""

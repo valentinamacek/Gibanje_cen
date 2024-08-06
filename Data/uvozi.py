@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from Data.repository import Repo
-from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, drzava, inflacija, izdelek, gibanje_cen
+from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, drzava, inflacija, izdelek, gibanje_cen, hiczp
 
 repo = Repo()
 
@@ -36,7 +36,7 @@ dfind.replace(to_replace="-", value='', inplace=True)
 
 data_ind=dfind.to_numpy()
 
-print(data_ind[ :30])
+# print(data_ind[ :30])
 
 k = len(data_ind)
  
@@ -107,7 +107,7 @@ dfcene = pd.read_excel('Data\\povprecne_cene.xlsx')
 
 data_cene = dfcene.to_numpy()
 
-print(data_cene[:30])
+# print(data_cene[:30])
 
 # print(data_cene[2])
 
@@ -130,7 +130,7 @@ def uvoz_v_tabelo_gibanje_cen(data):
             sk = repo.dobi_skupino_iz_sifre(sifra)
             skupina = sk.id 
             
-uvoz_v_tabelo_gibanje_cen(data_cene)
+# uvoz_v_tabelo_gibanje_cen(data_cene)
 
 # def dobi_skupino_ali_ne(stri): 
 #     try: 
@@ -140,3 +140,132 @@ uvoz_v_tabelo_gibanje_cen(data_cene)
 #         return None 
 
 # dobi_skupino_ali_ne('13')
+
+dfhiczp1 = pd.ExcelFile('Data\\hiczp_slo_in_sosede_part1.xlsx')
+
+dfhiczp2 = pd.ExcelFile('Data\\hiczp_slo_in_sosede_part2.xlsx')
+
+dfutezi1 = pd.ExcelFile('Data\\utezi_slo_in_sosede_part1.xlsx')
+
+dfutezi2 = pd.ExcelFile('Data\\utezi_slo_in_sosede_part2.xlsx')
+
+hiczp1 = pd.read_excel(dfhiczp1, 'Sheet 27')
+
+data_hiczp1 = hiczp1.to_numpy()
+
+print(data_hiczp1[5][2])
+
+s = repo.dobi_skupino_iz_ang_imena(data_hiczp1[5][2])
+print(s)
+
+# UPDATE table_name
+# SET column1 = value1, column2 = value2, ...
+# WHERE condition;
+
+s = repo.dobi_skupino_iz_id(28)
+print(s.ang_ime)
+
+
+def uvoz_v_tabelo_hiczp(data) : 
+
+    for i in range(88,175): 
+        if i not in [1, 24, 58, 80, 105, 137]: 
+            df_za_sk = pd.read_excel(data, f'Sheet {i}')
+            data_za_sk = df_za_sk.to_numpy()
+            if i != 88: 
+                sk=repo.dobi_skupino_iz_ang_imena(data_za_sk[5][2])
+                min_raven = sk[0].raven
+                min_s = sk[0]
+                for s in sk: 
+                    if s.raven < min_raven: 
+                        min_raven = s.raven 
+                        min_s = s 
+                id_skupine = min_s.id 
+            else: 
+                id_skupine =368
+            for i,el in enumerate(data_za_sk):
+                if 'TIME'==el[0]: 
+                    leta = el 
+                    ind = i 
+                    break 
+            
+            id_drzave = 0
+            for i in range(ind+2, ind+7): 
+                id_drzave +=1
+                vrstica_drzave = data_za_sk[i]
+                j=0
+                for hiczp_ in vrstica_drzave[1:]: 
+                    j +=1 
+                    if not pd.isna(hiczp_) and hiczp_ not in ['c', 'd', 'u']:  
+                        print(leta[j])
+                        leto = int(leta[j][ :4])
+                        if hiczp_ != ':': 
+                            indeks_hiczp = hiczp_ + 100 
+                        else: 
+                            indeks_hiczp = None 
+                        repo.dodaj_hiczp(hiczp(leto=leto, skupina_id=id_skupine, id_drzave=id_drzave, utezi=None, harmoniziran_indeks=indeks_hiczp))
+
+# uvoz_v_tabelo_hiczp(dfhiczp2)
+
+# print(repo.dobi_skupino_iz_id(246).ang_ime)
+def preveri_ce_se_ujema(data): 
+    neopredeljeni = []
+    for i in range(1,175): 
+        if i != 234: 
+            df_za_sk = pd.read_excel(data, f'Sheet {i}')
+            data_za_sk = df_za_sk.to_numpy()
+            sk=repo.dobi_skupino_iz_ang_imena(data_za_sk[4][2])
+            if sk==[]: 
+              neopredeljeni.append(i)
+    return neopredeljeni  
+
+# neopredeljeni = preveri_ce_se_ujema(dfhiczp2) 
+print(preveri_ce_se_ujema(dfutezi2))
+
+hiczp2 = pd.read_excel(dfutezi1, 'Sheet 27')
+
+data_hiczp2 = hiczp2.to_numpy()
+
+# print(data_hiczp2[:30])
+
+def uvoz_v_tabelo_hiczp_utezi(data) : 
+
+    for i in range(1,175): 
+        if i not in [1, 24, 58, 80, 105, 137]: 
+            df_za_sk = pd.read_excel(data, f'Sheet {i}')
+            data_za_sk = df_za_sk.to_numpy()
+            if i != 88: 
+                sk=repo.dobi_skupino_iz_ang_imena(data_za_sk[4][2])
+                min_raven = sk[0].raven
+                min_s = sk[0]
+                for s in sk: 
+                    if s.raven < min_raven: 
+                        min_raven = s.raven 
+                        min_s = s 
+                id_skupine = min_s.id 
+            else: 
+                id_skupine =368
+
+            for i,el in enumerate(data_za_sk):
+                if 'TIME'==el[0]: 
+                    leta = el 
+                    ind = i 
+                    break 
+            
+            id_drzave = 0
+            for i in range(ind+2, ind+7): 
+                id_drzave +=1
+                vrstica_drzave = data_za_sk[i]
+                j=0
+                for hiczp_ in vrstica_drzave[1:]: 
+                    j +=1 
+                    if not pd.isna(hiczp_) and hiczp_ not in ['c', 'd', 'u']:  
+                        print(leta[j])
+                        leto = int(leta[j])
+                        if hiczp_ != ':': 
+                            utezi = round(hiczp_ /10, ndigits=1)
+                        else: 
+                            utezi = None 
+                        repo.dodaj_utez(hiczp(leto=leto, skupina_id=id_skupine, id_drzave=id_drzave, utezi=utezi))
+
+uvoz_v_tabelo_hiczp_utezi(dfutezi2)
