@@ -268,4 +268,4 @@ def uvoz_v_tabelo_hiczp_utezi(data) :
                             utezi = None 
                         repo.dodaj_utez(hiczp(leto=leto, skupina_id=id_skupine, id_drzave=id_drzave, utezi=utezi))
 
-uvoz_v_tabelo_hiczp_utezi(dfutezi2)
+# uvoz_v_tabelo_hiczp_utezi(dfutezi2)
