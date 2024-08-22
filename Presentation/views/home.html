@@ -1,7 +1,5 @@
-%rebase('base.html')
-<h1> 
-    Uteži in letni indeks cen življenjskih potrebščin
-</h1>
+%rebase('base.html', naslov='Indeksi cen življenjskih potrebščin')
+
 <div style="display: flex;">
 
     <div style="flex:1;">
@@ -10,8 +8,8 @@
             <tr>
                 
                 <th>Leto</th>
-                <th>Skupina_id</th>
-                <th>Uteži</th>  
+                <th>Ime skupine</th>
+                <th>Šifra skupine</th>  
                 <th>Letni_iczp</th>     
              </tr>
         </thead>
@@ -19,8 +17,8 @@
       %for iczp in iczpji:
         <tr>
            <td>{{iczp.leto}}</td>           
-           <td>{{iczp.skupina_id}}</td>
-           <td>{{iczp.utezi}}</td>
+           <td>{{iczp.skupina_ime}}</td>
+           <td>{{iczp.skupina_sifra}}</td>
            <td>{{iczp.letni_iczp}}</td>
      
         </tr>

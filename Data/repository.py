@@ -3,7 +3,7 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 import Data.auth_public as auth
 import os
 
-from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, utezi_in_letni_indeksDto, gibanje_cen, izdelek, drzava, inflacija, hiczp, hiczpDto, Uporabnik, UporabnikDto
+from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, letni_indeksDto, gibanje_cen, izdelek, drzava, inflacija, hiczp, hiczpDto, Uporabnik, UporabnikDto
 from typing import List 
 
 DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
@@ -71,6 +71,14 @@ class Repo:
         """)
         u_iczp = [utezi_in_letni_indeks.from_dict(t) for t in self.cur.fetchall()]
         return u_iczp
+
+    def dobi_letne_indekse_dto(self) -> List[letni_indeksDto]:
+        self.cur.execute("""
+            SELECT leto, klasifikacija.ime AS skupina_ime, klasifikacija.sifra AS skupina_sifra, letni_iczp
+            FROM utezi_in_letni_indeks JOIN klasifikacija ON skupina_id = id
+        """)
+        iczpdto = [letni_indeksDto.from_dict(t) for t in self.cur.fetchall()]
+        return iczpdto
 
     def dobi_utez_in_letni_indeks(self, leto, skupina_id)-> utezi_in_letni_indeks: 
         self.cur.execute("""

@@ -29,12 +29,10 @@ class utezi_in_letni_indeks:
 
 @dataclass_json
 @dataclass
-class utezi_in_letni_indeksDto: 
+class letni_indeksDto: 
     leto : int = field(default=0)  
-    skupina_id : int = field(default=0)
     skupina_ime: str = field(default="")
-    nadskupina_ime: str = field(default="")
-    utezi: float = field(default=0)
+    skupina_sifra: str = field(default="")
     letni_iczp: float = field(default=0)
 
 @dataclass_json

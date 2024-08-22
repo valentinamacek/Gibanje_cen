@@ -6,7 +6,9 @@ class CeneService:
     def __init__(self) -> None:
         self.repo = Repo()
 
-    def dobi_iczp(self) -> List[utezi_in_letni_indeks]: 
-        return self.repo.dobi_utezi_in_letne_indekse()
+    def dobi_iczp(self) -> List[letni_indeksDto]: 
+        return self.repo.dobi_letne_indekse_dto()
+
+
 
        
