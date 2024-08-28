@@ -18,14 +18,42 @@
       </button> -->
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link active" href="#"> Home </a>
-          <a class="nav-link" href="#">Leta</a>
-          <a class="nav-link" href="#">Skupine</a>
-          <a class="nav-link" href="#" >Države</a>
-          <a class="nav-link" href="#">Indeksi</a>
-          <a class="nav-link" href="#">Uteži</a>
-          <a class="nav-link" href="#">Cene</a>
-        </div>
+        % if stran == 'iczp':
+          <a class="nav-link active" href="{{url('/')}}">ICŽP</a>
+        %else:
+        <a class="nav-link" href="{{url('/')}}"> ICŽP </a>
+        %end
+        % if stran == 'hiczp':
+        <a class="nav-link active" href="#">HICŽP</a>
+        %else:
+        <a class="nav-link" href="#">HICŽP</a>
+        %end
+        % if stran == 'utezi':
+        <a class="nav-link active" href="#">Uteži</a>
+        %else:
+        <a class="nav-link" href="#">Uteži</a>
+        %end
+        % if stran == 'cene':
+        <a class="nav-link active" href="#">Cene</a>
+        %else:
+        <a class="nav-link" href="#">Cene</a>
+        %end
+        % if stran == 'skupine':
+        <a class="nav-link active" href="{{ url('/skupine')}}">Skupine</a>
+        %else:
+        <a class="nav-link" href="{{ url('/skupine')}}">Skupine</a>
+        %end
+        % if stran == 'leta':
+        <a class="nav-link active" href="#">Leta</a>
+        %else:
+        <a class="nav-link" href="#">Leta</a>
+        %end
+        % if stran == 'drzave':
+        <a class="nav-link active" href="#">Države</a>
+        %else:
+        <a class="nav-link" href="#">Države</a>
+        %end
+       </div>
       </div>
     </div>
   </nav>

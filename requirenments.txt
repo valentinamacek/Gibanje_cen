@@ -4,3 +4,4 @@ bottle
 bcrypt
 pandas
 openpyxl
+matplotlib

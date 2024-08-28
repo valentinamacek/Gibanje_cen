@@ -1,0 +1,52 @@
+%rebase('base.html', naslov='klasifikacija', stran='skupine')
+
+<div class="container mt-5">
+    <h1>ECOICOP klasifikacija</h1>
+    
+    <form class="d-flex mb-3">
+        <input class="form-control me-2" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+    </form>
+
+    <table class="table table-hover" id="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Ime</th>
+                <th scope="col">Name</th>
+                <th scope="col">Šifra</th>
+                <th scope="col">Raven</th>
+            </tr>
+        </thead>
+        <tbody>
+        %for skupina in skupine: 
+            <tr data-href="{{url('skupina',id_skupine=skupina.id)}}">
+                <th scope="row">{{skupina.id}}</th>
+                <td>{{skupina.ime}}</td>
+                <td>{{skupina.ang_ime}}</td>
+                <td>{{skupina.sifra}}</td>
+                <td>{{skupina.raven}}</td>
+            </tr>
+        %end
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        var input = this.value.toLowerCase();
+        var rows = document.querySelectorAll('#dataTable tbody tr');
+
+        rows.forEach(function(row) {
+            var text = row.textContent.toLowerCase();
+            row.style.display = text.includes(input) ? '' : 'none';
+        });
+    });
+
+    // Clickable row functionality
+    document.querySelectorAll('#dataTable tbody tr').forEach(function(row) {
+        row.addEventListener('click', function() {
+            window.location.href = this.dataset.href;
+        });
+    });
+</script>

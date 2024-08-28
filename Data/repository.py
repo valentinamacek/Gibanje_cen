@@ -15,6 +15,14 @@ class Repo:
       self.conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
       self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     
+    def dobi_skupine(self) -> List[klasifikacija]:
+        self.cur.execute("""
+            SELECT id, ime, ang_ime, sifra, raven
+            FROM klasifikacija
+        """)
+        skupine = [klasifikacija.from_dict(t) for t in self.cur.fetchall()]
+        return skupine
+
     def dobi_skupino_iz_id(self, id_skupine: int) -> klasifikacija:
         self.cur.execute("""
             SELECT id, ime, ang_ime, sifra, raven
@@ -91,7 +99,7 @@ class Repo:
         ul = utezi_in_letni_indeks.from_dict(self.cur.fetchone())
         return ul 
     
-    def dobi_utezi_in_letne_indekse_skupine(self, skupina_id):
+    def dobi_utezi_in_letne_indekse_skupine(self, skupina_id)-> List[utezi_in_letni_indeks]:
         self.cur.execute("""
             SELECT leto, skupina_id, utezi, letni_iczp 
             FROM utezi_in_letni_indeks
@@ -110,6 +118,16 @@ class Repo:
             VALUES (%s, %s, %s, %s)
             """, (uil.leto, uil.skupina_id, uil.utezi, uil.letni_iczp))
         self.conn.commit()
+
+    def dobi_hiczp_drzave_skupine(self, skupina_id, drzava_id)-> List[hiczp]:
+        self.cur.execute("""
+            SELECT leto, skupina_id, id_drzave, utezi, harmoniziran_indeks 
+            FROM hiczp
+            WHERE skupina_id =%s
+            AND id_drzave =%s
+        """, (skupina_id, drzava_id))
+        hiczpj = [hiczp.from_dict(t) for t in self.cur.fetchall()]
+        return hiczpj
     
     def dodaj_hiczp(self, hiczp: hiczp): 
         self.cur.execute("""
