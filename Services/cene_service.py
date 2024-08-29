@@ -21,5 +21,12 @@ class CeneService:
     def dobi_hiczpje_drzave_sk(self, id_sk, id_d) -> List[hiczp]: 
         return self.repo.dobi_hiczp_drzave_skupine(id_sk, id_d)
     
+    def dobi_utez_iczp(self, leto, id_sk) -> utezi_in_letni_indeks: 
+        return self.repo.dobi_utez_in_letni_indeks(leto, id_sk)
 
+    def dobi_utez_hiczp(self, leto, id_sk, id_d) -> hiczp: 
+        return self.repo.dobi_utez_in_hiczp(leto, id_sk , id_d)
+
+    def dobi_utezi_podskupin(self, leto, id_nadsk) -> List[utez_iczpDto]:
+        return self.repo.dobi_utezi_podskupin(leto, id_nadsk)
        

@@ -19,20 +19,23 @@
         </thead>
         <tbody>
         %for skupina in skupine: 
-            <tr data-href="{{url('skupina',id_skupine=skupina.id)}}">
+            %if skupina.id != 1:
+            <tr>
                 <th scope="row">{{skupina.id}}</th>
                 <td>{{skupina.ime}}</td>
                 <td>{{skupina.ang_ime}}</td>
                 <td>{{skupina.sifra}}</td>
                 <td>{{skupina.raven}}</td>
+                <td><a href="{{url('skupina',id_skupine=skupina.id)}}">preglej</a></td>
             </tr>
+            %end
         %end
         </tbody>
     </table>
 </div>
 
 <script>
-    // Search functionality
+    // Funkcionalnost iskanja po tabeli 
     document.getElementById('searchInput').addEventListener('keyup', function() {
         var input = this.value.toLowerCase();
         var rows = document.querySelectorAll('#dataTable tbody tr');
@@ -43,10 +46,10 @@
         });
     });
 
-    // Clickable row functionality
-    document.querySelectorAll('#dataTable tbody tr').forEach(function(row) {
-        row.addEventListener('click', function() {
-            window.location.href = this.dataset.href;
-        });
-    });
+    // Funkcionalnost klikanja po tabeli 
+    // document.querySelectorAll('#dataTable tbody tr').forEach(function(row) {
+    //     row.addEventListener('click', function() {
+    //         window.location.href = this.dataset.href;
+    //     });
+    // });
 </script>

@@ -37,6 +37,14 @@ class letni_indeksDto:
 
 @dataclass_json
 @dataclass
+class utez_iczpDto: 
+    leto : int = field(default=0)  
+    skupina_ime: str = field(default="")
+    skupina_sifra: str = field(default="")
+    utez: float = field(default=0)
+
+@dataclass_json
+@dataclass
 class izdelek: 
     id : int = field(default=0)  
     ime : str = field(default="")

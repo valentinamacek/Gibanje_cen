@@ -4,6 +4,7 @@ import os
 import io
 import base64
 import matplotlib.pyplot as plt
+import numpy as np
 
 from Services.cene_service import CeneService 
 from Services.auth_service import AuthService
@@ -16,7 +17,7 @@ service = CeneService()
 
 
 def generate_graf_indeksov(lst_indeksov, hiczp): 
-
+    #izrise graf primerjave icžp in hizcžp(za Slovenijo)
     plt.clf()
 
     plt.figure(figsize=(12, 4)) 
@@ -53,7 +54,7 @@ def generate_graf_indeksov(lst_indeksov, hiczp):
     plt.xticks([i for i in range(2000, 2024)])
     plt.xlabel('Leto')
     plt.ylabel('icžp')
-    plt.title('Spreminjanje icžp in hicžp z leti')
+    plt.title('Primerjava icžp in hicžp po letih')
     plt.legend(title='Indeks', loc='best')
     
     buffer = io.BytesIO()
@@ -66,7 +67,31 @@ def generate_graf_indeksov(lst_indeksov, hiczp):
        
     return img_base64
 
+#za izpis dejanskih utezi v pie_chartu: 
+def func(pct, allvals):
+    absolute = np.round(pct/100.*np.sum(allvals),1)
+    return f"{absolute}"
 
+def generate_pie(lst_utezi): 
+
+    plt.clf()
+    
+    velikosti = []
+    labels = []
+    for utez_dto in lst_utezi: 
+        velikosti.append(utez_dto.utez)
+        labels.append(utez_dto.skupina_ime)
+    plt.pie(velikosti, labels=labels,  autopct=lambda pct: func(pct, velikosti))
+
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    
+    # Convert the image to a base64 string
+    img_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+    buffer.close()
+       
+    return img_base64
 
 
 def cookie_required(f):
@@ -105,6 +130,23 @@ def skupina(id_skupine):
     hiczp = service.dobi_hiczpje_drzave_sk(id_skupine, 5)
     graf_base64 = generate_graf_indeksov(iczpji, hiczp)
     return template_user('skupina.html', skupina= skupina, chart_base64=graf_base64)
+
+@get('/skupinaleto/<id_skupine:int>/<leto:int>')
+@cookie_required
+def skupinaleto(id_skupine, leto): 
+    
+    skupina = service.dobi_skupino(id_skupine)
+    utez_iczp = service.dobi_utez_iczp(leto, id_skupine)
+    utez_hiczp = service.dobi_utez_hiczp(leto, id_skupine, 5)
+    utezi_podskupin = service.dobi_utezi_podskupin(leto, id_skupine)
+    pie_base64 = generate_pie(utezi_podskupin)
+    return template_user('skupina_leto.html', skupina=skupina, utez_iczp = utez_iczp, utez_hiczp = utez_hiczp, chart_base64=pie_base64)
+
+@get('/leta')
+@cookie_required
+def leta(): 
+    leta = [i for i in range(2000, 2024)]
+    return template_user('leta.html', leta=leta)
 
 @post('/prijava')
 def prijava():
