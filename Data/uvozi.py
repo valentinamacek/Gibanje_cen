@@ -153,17 +153,17 @@ hiczp1 = pd.read_excel(dfhiczp1, 'Sheet 27')
 
 data_hiczp1 = hiczp1.to_numpy()
 
-print(data_hiczp1[5][2])
+# print(data_hiczp1[5][2])
 
 s = repo.dobi_skupino_iz_ang_imena(data_hiczp1[5][2])
-print(s)
+# print(s)
 
 # UPDATE table_name
 # SET column1 = value1, column2 = value2, ...
 # WHERE condition;
 
 s = repo.dobi_skupino_iz_id(28)
-print(s.ang_ime)
+# print(s.ang_ime)
 
 
 def uvoz_v_tabelo_hiczp(data) : 
@@ -220,7 +220,7 @@ def preveri_ce_se_ujema(data):
     return neopredeljeni  
 
 # neopredeljeni = preveri_ce_se_ujema(dfhiczp2) 
-print(preveri_ce_se_ujema(dfutezi2))
+# print(preveri_ce_se_ujema(dfutezi2))
 
 hiczp2 = pd.read_excel(dfutezi1, 'Sheet 27')
 
@@ -269,3 +269,10 @@ def uvoz_v_tabelo_hiczp_utezi(data) :
                         repo.dodaj_utez(hiczp(leto=leto, skupina_id=id_skupine, id_drzave=id_drzave, utezi=utezi))
 
 # uvoz_v_tabelo_hiczp_utezi(dfutezi2)
+podksupine = repo.dobi_skupine_dol_ravni(1)
+def dodaj_podksupine_skupaj(podskupine): 
+
+    for podskupina in podskupine: 
+        repo.dodaj_nivo(nivoji(id_podskupine=podskupina.id, id_nadskupine=1))
+    
+# dodaj_podksupine_skupaj(podksupine)

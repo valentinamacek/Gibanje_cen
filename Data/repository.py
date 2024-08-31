@@ -19,6 +19,7 @@ class Repo:
         self.cur.execute("""
             SELECT id, ime, ang_ime, sifra, raven
             FROM klasifikacija
+            ORDER BY id 
         """)
         skupine = [klasifikacija.from_dict(t) for t in self.cur.fetchall()]
         return skupine
@@ -55,6 +56,15 @@ class Repo:
             WHERE ang_ime = %s
             """, (ang_ime.upper(),))
             skji = [klasifikacija.from_dict(t) for t in self.cur.fetchall()]
+        return skji 
+
+    def dobi_skupine_dol_ravni(self, raven) -> List[klasifikacija]: 
+        self.cur.execute("""
+            SELECT id, ime, ang_ime, sifra, raven
+            FROM klasifikacija
+            WHERE raven = %s
+        """, (raven,))
+        skji = [klasifikacija.from_dict(t) for t in self.cur.fetchall()]
         return skji 
 
     def dodaj_klas(self, klas: klasifikacija):
@@ -227,11 +237,21 @@ class Repo:
 
     def dobi_ind_inflacije_drzave(self, id_drzave)-> List[inflacija]: 
         self.cur.execute("""
-            SELECT leto, indeks_inflacije
+            SELECT leto, id_drzave, indeks_inflacije
             FROM inflacija
             WHERE id_drzave=%s
-        """, (id_drzave))
+        """, (id_drzave,))
         infl = [inflacija.from_dict(t) for t in self.cur.fetchall()]
+        return infl
+
+    def dobi_inflacijo(self, leto, id_drzave) -> inflacija: 
+        self.cur.execute("""
+            SELECT leto, id_drzave, indeks_inflacije
+            FROM inflacija
+            WHERE id_drzave=%s
+            AND leto=%s
+        """, (id_drzave, leto))
+        infl =inflacija.from_dict(self.cur.fetchone()) 
         return infl
 
     def dodaj_izdelek(self, izdelek:izdelek): 

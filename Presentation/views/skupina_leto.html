@@ -6,7 +6,7 @@
 
 <img src="data:image/png;base64,{{ chart_base64 }}" alt="Chart">
 <div style="display: flex;">
-
+  % if skupina.id != 1: 
     <div style="flex:1;">
       <table class="table">
         <thead>
@@ -30,5 +30,26 @@
 
 
     </div>
+  %else:
+  <div style="flex:1;">
+    <table class="table">
+      <thead>
+          <tr>
+              
+              <th>ICŽP</th>
+              <th>HICŽP</th>     
+           </tr>
+      </thead>
+      <tr>      
+         <td>{{utez_iczp.letni_iczp}}</td>
+         <td>{{utez_hiczp.indeks_inflacije}}</td>
+      </tr>
+
+    </table>
+
+
+
+  </div>
+ %end
 </div>
 </div>

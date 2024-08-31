@@ -23,6 +23,7 @@ def generate_graf_indeksov(lst_indeksov, hiczp):
     plt.figure(figsize=(12, 4)) 
 
     xy = []
+    skupina_id = lst_indeksov[0].skupina_id
 
     for indeks in lst_indeksov: 
         xy.append((indeks.leto, indeks.letni_iczp) )
@@ -37,7 +38,10 @@ def generate_graf_indeksov(lst_indeksov, hiczp):
  
     zw = []
     for hi in hiczp:
-        zw.append((hi.leto, hi.harmoniziran_indeks)) 
+        if skupina_id != 1: 
+         zw.append((hi.leto, hi.harmoniziran_indeks)) 
+        else:
+         zw.append((hi.leto, hi.indeks_inflacije)) 
     zw.sort()
     z = []
     w = []
@@ -82,6 +86,7 @@ def generate_pie(lst_utezi):
         velikosti.append(utez_dto.utez)
         labels.append(utez_dto.skupina_ime)
     plt.pie(velikosti, labels=labels,  autopct=lambda pct: func(pct, velikosti))
+    plt.title('Pomembnost podskupin v ICŽP', fontdict={'fontsize': 16, 'fontweight': 'bold'})
 
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
@@ -130,7 +135,7 @@ def skupina(id_skupine):
     if id_skupine != 1:
         hiczp = service.dobi_hiczpje_drzave_sk(id_skupine, 5)
     else:
-        hiczp = 
+        hiczp = service.dobi_inflacije_drzave(5)
     graf_base64 = generate_graf_indeksov(iczpji, hiczp)
     return template_user('skupina.html', skupina= skupina, chart_base64=graf_base64)
 
@@ -140,7 +145,10 @@ def skupinaleto(id_skupine, leto):
     
     skupina = service.dobi_skupino(id_skupine)
     utez_iczp = service.dobi_utez_iczp(leto, id_skupine)
-    utez_hiczp = service.dobi_utez_hiczp(leto, id_skupine, 5)
+    if id_skupine != 1: 
+       utez_hiczp = service.dobi_utez_hiczp(leto, id_skupine, 5)
+    else: 
+       utez_hiczp = service.dobi_inflacijo(leto, 5)
     utezi_podskupin = service.dobi_utezi_podskupin(leto, id_skupine)
     pie_base64 = generate_pie(utezi_podskupin)
     return template_user('skupina_leto.html', skupina=skupina, utez_iczp = utez_iczp, utez_hiczp = utez_hiczp, chart_base64=pie_base64)

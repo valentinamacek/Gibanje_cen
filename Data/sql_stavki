@@ -117,3 +117,4 @@ CREATE TABLE gibanje_cen(
     id_izdelka INTEGER REFERENCES izdelki(id), 
     cena NUMERIC
 )
+
