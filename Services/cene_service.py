@@ -44,3 +44,6 @@ class CeneService:
 
     def dobi_hiczp_drzav(self, leto, id_drzav) -> List[hiczpDto]:
         return self.repo.dobi_hiczp_drzav(leto, id_drzav)
+
+    def dobi_ceno_izdelkov_skupine(self, id_skupine, leto) -> List[cenaizdelkaDto]:
+        return self.repo.dobi_ceno_izdelkov_skupine(id_skupine, leto) 

@@ -3,8 +3,9 @@
 
 <div class="container mt-5">
 <h1>{{ skupina.ime }} leta {{ utez_iczp.leto }}</h1>
-
-<img src="data:image/png;base64,{{ chart_base64 }}" alt="Chart">
+% if chart_base64: 
+ <img src="data:image/png;base64,{{ chart_base64 }}" alt="Chart">
+%end 
 <div style="display: flex;">
   % if skupina.id != 1: 
     <div style="flex:1;">
@@ -52,4 +53,30 @@
   </div>
  %end
 </div>
+% if cene_izdelkov: 
+<div style="display: flex;">
+  Povprečne cene izdelkov skupine {{ skupina.ime }} leta {{ utez_iczp.leto }} 
+    <div style="flex:1;">
+      <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Ime izdelka skupine</th>
+                <th>povprečna cena</th>
+
+             </tr>
+        </thead>
+      % for cena_izdelka in cene_izdelkov:
+        <tr>
+           <td>{{ cena_izdelka.ime_izdelka }}</td>           
+           <td>{{ cena_izdelka.cena }}</td>
+        </tr>
+      %end
+      </table>
+
+
+
+    </div>
+</div>
+%end
 </div>

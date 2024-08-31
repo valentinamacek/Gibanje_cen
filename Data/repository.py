@@ -270,7 +270,18 @@ class Repo:
             """, (cena.leto, cena.id_izdelka, cena.cena))
         self.conn.commit()
 
+    def dobi_ceno_izdelkov_skupine(self, id_skupine, leto) -> List[cenaizdelkaDto]:
+        #vrne povprecno ceno izdelkov za določeno leto, ki pripadajo izbrani skupini
+        self.cur.execute("""
+            SELECT g.leto AS leto, i.ime AS ime_izdelka , g.cena AS cena 
+            FROM gibanje_cen g
+            JOIN izdelki i ON g.id_izdelka = i.id
+            WHERE i.id_skupine=%s
+            AND g.leto = %s
+        """, (id_skupine, leto))
 
+        infl = [cenaizdelkaDto.from_dict(t) for t in self.cur.fetchall()]
+        return infl
 
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""

@@ -149,9 +149,13 @@ def skupinaleto(id_skupine, leto):
        utez_hiczp = service.dobi_utez_hiczp(leto, id_skupine, 5)
     else: 
        utez_hiczp = service.dobi_inflacijo(leto, 5)
+    cene_izdelkov = service.dobi_ceno_izdelkov_skupine( id_skupine, leto) 
     utezi_podskupin = service.dobi_utezi_podskupin(leto, id_skupine)
-    pie_base64 = generate_pie(utezi_podskupin)
-    return template_user('skupina_leto.html', skupina=skupina, utez_iczp = utez_iczp, utez_hiczp = utez_hiczp, chart_base64=pie_base64)
+    if utezi_podskupin == []:
+        return template_user('skupina_leto.html', skupina=skupina, utez_iczp = utez_iczp, utez_hiczp = utez_hiczp, cene_izdelkov=cene_izdelkov, chart_base64="" )
+    else: 
+        pie_base64 = generate_pie(utezi_podskupin)
+        return template_user('skupina_leto.html', skupina=skupina, utez_iczp = utez_iczp, utez_hiczp = utez_hiczp, cene_izdelkov=cene_izdelkov, chart_base64=pie_base64)
 
 @get('/leta')
 @cookie_required

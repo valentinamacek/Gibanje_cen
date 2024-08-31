@@ -78,6 +78,13 @@ class gibanje_cen:
     id_izdelka: int = field(default=0)
     cena: float = field(default=0)
 
+@dataclass_json
+@dataclass
+class cenaizdelkaDto: 
+    leto : int = field(default=0) 
+    ime_izdelka: str = field(default="")
+    cena: float = field(default=0)
+
 
 @dataclass_json
 @dataclass
