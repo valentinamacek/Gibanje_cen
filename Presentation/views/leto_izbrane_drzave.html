@@ -1,0 +1,34 @@
+%rebase('base.html', naslov='leta', stran='leta')
+<div style="display: flex;">
+
+    <div style="flex:1;">
+      <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Leto</th>
+                <th>Ime skupine</th>
+                <th>Šifra skupine</th>  
+                <th>Ime države</th> 
+                <th>Utež HICŽP</th>
+                <th>letni HICŽP</th>              
+             </tr>
+        </thead>
+     
+      %for hiczp in hiczpji:
+        <tr>
+           <td>{{hiczp.leto}}</td>           
+           <td>{{hiczp.ime_skupine}}</td>
+           <td>{{hiczp.sifra_skupine}}</td>
+           <td>{{hiczp.ime_drzave}}</td>
+           <td>{{hiczp.utez}}</td>
+           <td>{{hiczp.harmoniziran_indeks}}</td>
+        </tr>
+      %end
+      </table>
+
+
+
+    </div>    
+
+    </div>

@@ -3,7 +3,7 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 import Data.auth_public as auth
 import os
 
-from Data.models import klasifikacija, nivoji, utezi_in_letni_indeks, letni_indeksDto, gibanje_cen, izdelek, drzava, inflacija, hiczp, hiczpDto, Uporabnik, UporabnikDto
+from Data.models import *
 from typing import List 
 
 DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
@@ -108,6 +108,19 @@ class Repo:
         u_iczp = [utezi_in_letni_indeks.from_dict(t) for t in self.cur.fetchall()]
         return u_iczp
         
+    def dobi_iczpje_hiczpje_leta(self, leto) -> List[iczp_hiczpDto]:
+        self.cur.execute("""
+            SELECT u.leto AS leto, k.ime AS skupina_ime, k.sifra AS skupina_sifra, u.utezi AS utez_iczp , u.letni_iczp AS iczp, h.utezi AS utez_hiczp , h.harmoniziran_indeks AS hiczp
+            FROM utezi_in_letni_indeks u
+            FULL JOIN hiczp h ON u.leto = h.leto AND u.skupina_id = h.skupina_id
+            JOIN klasifikacija k ON u.skupina_id = k.id
+            WHERE u.leto =%s
+            AND h.id_drzave=%s
+            ORDER BY k.id
+        """, (leto,5))#to ustreza samo za hiczpje od Slovenije
+        hi_iczp = [iczp_hiczpDto.from_dict(t) for t in self.cur.fetchall()]
+        return hi_iczp
+    
     def dodaj_utez_in_letni_indeks(self, uil: utezi_in_letni_indeks): 
         if uil.utezi == '': 
             uil.utezi = None
@@ -128,6 +141,46 @@ class Repo:
         """, (skupina_id, drzava_id))
         hiczpj = [hiczp.from_dict(t) for t in self.cur.fetchall()]
         return hiczpj
+
+    def dobi_utez_in_hiczp(self, leto, skupina_id, drzava_id) -> hiczp:
+        self.cur.execute("""
+            SELECT leto, skupina_id, id_drzave, utezi, harmoniziran_indeks 
+            FROM hiczp
+            WHERE leto = %s
+            AND skupina_id =%s
+            AND id_drzave =%s
+        """, (leto, skupina_id, drzava_id))
+    
+        ul = hiczp.from_dict(self.cur.fetchone())
+        return ul 
+
+    def dobi_utezi_podskupin(self, leto, id_nadskupine) -> List[utez_iczpDto]: 
+        self.cur.execute("""
+            SELECT u.leto AS leto, k.ime AS skupina_ime, k.sifra AS skupina_sifra, u.utezi AS utez
+            FROM utezi_in_letni_indeks u
+            JOIN klasifikacija k on u.skupina_id = k.id
+            JOIN nivoji n on u.skupina_id = n.id_podskupine
+            WHERE u.leto = %s
+            AND n.id_nadskupine=%s
+        """, (leto, id_nadskupine))
+        utezi = [utez_iczpDto.from_dict(t) for t in self.cur.fetchall()]
+        return utezi
+    
+    def dobi_hiczp_drzav(self, leto, id_drzav) -> List[hiczpDto]: 
+        placeholders = ', '.join(['%s'] * len(id_drzav))
+        id_drzav.append(leto)
+        tupl_vseh = tuple(id_drzav)
+        self.cur.execute(f"""
+            SELECT h.leto AS leto, k.ime AS ime_skupine, k.sifra AS sifra_skupine, d.ime AS ime_drzave, h.utezi AS utez, h.harmoniziran_indeks AS harmoniziran_indeks
+            FROM hiczp h 
+            JOIN drzava d ON h.id_drzave = d.id
+            JOIN klasifikacija k ON h.skupina_id = k.id
+            WHERE h.id_drzave IN ({placeholders})
+            AND h.leto = %s
+            """, tupl_vseh
+        )
+        hiczpji = [hiczpDto.from_dict(t) for t in self.cur.fetchall()]
+        return hiczpji 
     
     def dodaj_hiczp(self, hiczp: hiczp): 
         self.cur.execute("""
@@ -149,7 +202,14 @@ class Repo:
     # UPDATE table_name
     # SET column1 = value1, column2 = value2, ...
     # WHERE condition;
-
+    def dobi_drzave(self)-> List[drzava]: 
+        self.cur.execute("""
+            SELECT id, ime
+            FROM drzava
+        """)
+        drzave = [drzava.from_dict(t) for t in self.cur.fetchall()]
+        return drzave
+ 
 
     def dodaj_drzavo(self, drzava: drzava): 
         self.cur.execute("""
@@ -164,6 +224,15 @@ class Repo:
             VALUES (%s, %s, %s)
             """, (inflacija.leto, inflacija.id_drzave, inflacija.indeks_inflacije))
         self.conn.commit()
+
+    def dobi_ind_inflacije_drzave(self, id_drzave)-> List[inflacija]: 
+        self.cur.execute("""
+            SELECT leto, indeks_inflacije
+            FROM inflacija
+            WHERE id_drzave=%s
+        """, (id_drzave))
+        infl = [inflacija.from_dict(t) for t in self.cur.fetchall()]
+        return infl
 
     def dodaj_izdelek(self, izdelek:izdelek): 
         self.cur.execute("""

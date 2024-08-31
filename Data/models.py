@@ -37,11 +37,32 @@ class letni_indeksDto:
 
 @dataclass_json
 @dataclass
+class hiczpDto: 
+    leto : int = field(default=0)  
+    drzava_ime:  str = field(default="")
+    skupina_ime: str = field(default="")
+    skupina_sifra: str = field(default="")
+    utez_hiczp: float = field(default=0)
+    letni_hiczp: float = field(default=0)
+
+@dataclass_json
+@dataclass
 class utez_iczpDto: 
     leto : int = field(default=0)  
     skupina_ime: str = field(default="")
     skupina_sifra: str = field(default="")
     utez: float = field(default=0)
+
+@dataclass_json
+@dataclass
+class iczp_hiczpDto: 
+    leto : int = field(default=0)  
+    skupina_ime: str = field(default="")
+    skupina_sifra: str = field(default="")
+    utez_iczp: float = field(default=0)
+    iczp: float = field(default=0)
+    utez_hiczp: float = field(default=0)
+    hiczp: float = field(default=0)
 
 @dataclass_json
 @dataclass
@@ -84,11 +105,10 @@ class hiczp:
 @dataclass
 class hiczpDto: 
     leto : int = field(default=0)  
-    skupina_id : int = field(default=0)
     ime_skupine: str = field(default="")
-    id_drzave : int = field(default=0)
+    sifra_skupine: str = field(default="")
     ime_drzave: str = field(default="")
-    utezi: float = field(default=0)
+    utez: float = field(default=0)
     harmoniziran_indeks: float = field(default=0)
 
 @dataclass_json

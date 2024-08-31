@@ -19,7 +19,6 @@
         </thead>
         <tbody>
         %for skupina in skupine: 
-            %if skupina.id != 1:
             <tr>
                 <th scope="row">{{skupina.id}}</th>
                 <td>{{skupina.ime}}</td>
@@ -28,7 +27,6 @@
                 <td>{{skupina.raven}}</td>
                 <td><a href="{{url('skupina',id_skupine=skupina.id)}}">preglej</a></td>
             </tr>
-            %end
         %end
         </tbody>
     </table>

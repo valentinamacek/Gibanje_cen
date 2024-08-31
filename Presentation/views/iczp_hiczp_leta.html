@@ -1,0 +1,36 @@
+%rebase('base.html', naslov='leta', stran='leta')
+<div style="display: flex;">
+
+    <div style="flex:1;">
+      <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Leto</th>
+                <th>Ime skupine</th>
+                <th>Šifra skupine</th>  
+                <th>Utež ICŽP</th> 
+                <th>Letni ICŽP</th>  
+                <th>Utež HICŽP</th>
+                <th>letni HICŽP</th>              
+             </tr>
+        </thead>
+     
+      %for indeks in indeksi:
+        <tr>
+           <td>{{indeks.leto}}</td>           
+           <td>{{indeks.skupina_ime}}</td>
+           <td>{{indeks.skupina_sifra}}</td>
+           <td>{{indeks.utez_iczp}}</td>
+           <td>{{indeks.iczp}}</td>
+           <td>{{indeks.utez_hiczp}}</td>
+           <td>{{indeks.hiczp}}</td>
+        </tr>
+      %end
+      </table>
+
+
+
+    </div>    
+
+    </div>

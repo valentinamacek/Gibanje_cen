@@ -127,7 +127,10 @@ def skupina(id_skupine):
       
     skupina = service.dobi_skupino(id_skupine)
     iczpji = service.dobi_iczpje_skupine(id_skupine)
-    hiczp = service.dobi_hiczpje_drzave_sk(id_skupine, 5)
+    if id_skupine != 1:
+        hiczp = service.dobi_hiczpje_drzave_sk(id_skupine, 5)
+    else:
+        hiczp = 
     graf_base64 = generate_graf_indeksov(iczpji, hiczp)
     return template_user('skupina.html', skupina= skupina, chart_base64=graf_base64)
 
@@ -147,6 +150,35 @@ def skupinaleto(id_skupine, leto):
 def leta(): 
     leta = [i for i in range(2000, 2024)]
     return template_user('leta.html', leta=leta)
+
+@post('/leta')
+@cookie_required
+def leta_post():
+    leto = int(request.forms.get('leto'))
+    primerjava = int(request.forms.get('prikaz'))
+
+    if int(primerjava) == 1:  # Primerjava ICŽP in HICŽP
+        indeksi = service.dobi_iczpje_hiczpje_leta(int(leto))
+        return template_user('iczp_hiczp_leta.html', indeksi=indeksi)
+    else:  # Primerjava po državah
+        drzave = service.dobi_drzave()
+        return template_user('leto_po_drzavah.html', leto=leto, drzave=drzave)
+        
+@get('/leto_drzave/<leto:int>')
+@cookie_required
+def leto_drzave(leto): 
+    drzave = service.dobi_drzave()
+    return template_user('leto_po_drzavah.html', leto=leto, drzave=drzave)
+        
+
+@post('/leto_drzave')
+@cookie_required
+def leto_drzave_post(): 
+    leto = int(request.forms.get('leto'))
+    id_list = request.forms.getall('countries')
+    id_drzav = [int(id) for id in id_list]
+    sez = service.dobi_hiczp_drzav(leto, id_drzav)
+    return template_user('leto_izbrane_drzave', hiczpji=sez)
 
 @post('/prijava')
 def prijava():

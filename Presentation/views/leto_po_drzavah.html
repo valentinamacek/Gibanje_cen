@@ -1,0 +1,19 @@
+%rebase('base.html', naslov='leta', stran='leta')
+
+Prikaži hicžp za naslednje države: 
+
+<form action="{{url('/leto_drzave')}}" method="POST" style="width:60%">
+% for drzava in drzave:
+  <div class="form-group">
+    <input type="checkbox" id="Country{{ drzava.id }}" name="countries" value="{{ drzava.id }}">
+        <label for="Country{{ drzava.id }}"> {{ drzava.ime }}</label>
+  </div>
+% end
+<div class="form-group">
+    <label for="leto">Leto</label>      
+    <select class="form-select" name="leto"  aria-placeholder="Izberi leto">
+        <option value="{{ leto }}">{{ leto }}</option>
+    </select> 
+</div>
+<button type="submit" class="btn btn-primary">Izberi</button>
+</form>
