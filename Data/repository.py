@@ -219,6 +219,15 @@ class Repo:
         """)
         drzave = [drzava.from_dict(t) for t in self.cur.fetchall()]
         return drzave
+
+    def dobi_drzavo(self, id_drzave)-> drzava: 
+        self.cur.execute("""
+            SELECT id, ime
+            FROM drzava
+            WHERE id=%s
+        """, (id_drzave, ))
+        d = drzava.from_dict(self.cur.fetchone())
+        return d
  
 
     def dodaj_drzavo(self, drzava: drzava): 

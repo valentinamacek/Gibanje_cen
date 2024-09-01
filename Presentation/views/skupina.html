@@ -9,7 +9,7 @@
         <div class="row">
             <!-- First row -->
             <div class="col-md-6 d-flex align-items-center">
-                <span>Izberi prikaz:</span>
+                <span>Izberi drug prikaz:</span>
             </div>
             <div class="col-md-6 d-flex justify-content-end align-items-center">
                 <span>Izberi posamično:</span>
@@ -21,15 +21,26 @@
             <!-- Left side: Links -->
             <div class="col-md-6">
                 <ul class="list-inline mt-2 mb-0" style="color: gray;"> 
+                    % if prikaz != "hiczp in iczp":
                     <li class="list-inline-item d-block"> 
-                        <a href="#" class="text-secondary">Primerjava hicžp med državami po letih</a>
+                        <a href="{{url('skupina',id_skupine=skupina.id)}}" class="text-secondary">Primerjava icžp in hicžp po letih</a>
                     </li>
+                    %end
+                    % if prikaz != 'hiczp drzave': 
                     <li class="list-inline-item d-block"> 
-                        <a href="#" class="text-secondary">Primerjava uteži med državami po letih</a>
+                        <a href="{{url('skupinahd',id_skupine=skupina.id)}}" class="text-secondary">Primerjava hicžp med državami po letih</a>
                     </li>
+                    %end
+                    % if prikaz != 'utezi drzave' and skupina.id !=1: 
                     <li class="list-inline-item d-block"> 
-                        <a href="#" class="text-secondary">Primerjava uteži za hicžp in icžp po letih</a>
+                        <a href="{{url('skupinahu',id_skupine=skupina.id)}}" class="text-secondary">Primerjava uteži med državami po letih</a>
                     </li>
+                    %end
+                    % if prikaz != 'utezi' and skupina.id !=1: 
+                    <li class="list-inline-item d-block"> 
+                        <a href="{{url('skupinau',id_skupine=skupina.id)}}" class="text-secondary">Primerjava uteži za hicžp in icžp po letih</a>
+                    </li>
+                    % end 
                 </ul>
             </div>
     

@@ -49,12 +49,29 @@
         <a class="nav-link" href="{{ url('/leta')}}">Leta</a>
         %end
         % if stran == 'drzave':
-        <a class="nav-link active" href="#">Države</a>
+        <a class="nav-link active" href="{{ url('/drzave') }}">Države</a>
         %else:
-        <a class="nav-link" href="#">Države</a>
+        <a class="nav-link" href="{{ url('/drzave') }}">Države</a>
         %end
        </div>
       </div>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+
+        <ul class="navbar-nav ml-auto">
+          % if rola and uporabnik:
+          <span class="navbar-text">
+            {{uporabnik}} ({{rola}}) 
+          </span>
+          %end      
+                      
+
+          <li class="nav-link">
+              <a class="dropdown-item" href="{{url('odjava')}}">Odjava</a>
+          </li>
+          % end
+        </ul>
+      </div>
+
     </div>
   </nav>
   <br>

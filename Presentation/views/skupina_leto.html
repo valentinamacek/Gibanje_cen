@@ -54,11 +54,17 @@
  %end
 </div>
 % if cene_izdelkov: 
+
+
 <div style="display: flex;">
-  Povprečne cene izdelkov skupine {{ skupina.ime }} leta {{ utez_iczp.leto }} 
     <div style="flex:1;">
       <table class="table">
         <thead>
+          <tr>
+            <th colspan="2">
+              <h2 style="text-align: center; font-size: 18px;">Povprečne cene izdelkov skupine {{ skupina.ime }} leta {{ utez_iczp.leto }}:</h2>
+            </th>
+          </tr>
             <tr>
                 
                 <th>Ime izdelka skupine</th>

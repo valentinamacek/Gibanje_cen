@@ -36,6 +36,9 @@ class CeneService:
     def dobi_drzave(self) -> List[drzava]: 
         return self.repo.dobi_drzave()
 
+    def dobi_drzavo(self, id_drzave) -> drzava: 
+        return self.repo.dobi_drzavo(id_drzave)
+
     def dobi_inflacije_drzave(self, id_drzave)-> List[inflacija]: 
         return self.repo.dobi_ind_inflacije_drzave(id_drzave)
 
@@ -46,4 +49,4 @@ class CeneService:
         return self.repo.dobi_hiczp_drzav(leto, id_drzav)
 
     def dobi_ceno_izdelkov_skupine(self, id_skupine, leto) -> List[cenaizdelkaDto]:
-        return self.repo.dobi_ceno_izdelkov_skupine(id_skupine, leto) 
+        return self.repo.dobi_ceno_izdelkov_skupine(id_skupine, leto)  
