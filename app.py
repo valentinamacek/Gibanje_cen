@@ -24,7 +24,10 @@ def generate_graf_indeksov(lst_indeksov, hiczp):
     plt.figure(figsize=(12, 4)) 
 
     xy = []
-    skupina_id = lst_indeksov[0].skupina_id
+    if lst_indeksov: 
+     skupina_id = lst_indeksov[0].skupina_id
+    else: 
+     skupina_id = hiczp[0].skupina_id
 
     for indeks in lst_indeksov: 
         if indeks.letni_iczp != None: 
@@ -187,7 +190,7 @@ def generate_grafdrzav(skupina, nacin):
     #sestavi graf, ki vsebuje grafikone spreminjanja hiczp / utezi cez leta za vse drzave
     plt.clf()
 
-    plt.figure(figsize=(12, 4)) 
+    plt.figure(figsize=(13, 4)) 
     vsi_y = []
     drzave = service.dobi_drzave()
     colors = ['red', 'blue', 'purple', 'orange', 'green']
@@ -291,6 +294,32 @@ def index():
     iczpji = service.dobi_iczp()
     return template_user('home.html', iczpji=iczpji)
 
+@get('/izbrisi_iczp/<id_skupine:int>/<leto:int>')
+@cookie_required
+def izbrisi_iczp(id_skupine, leto):
+    service.izbrisi_iczp(id_skupine, leto)
+
+    iczpji = service.dobi_iczp()
+    return template_user('home.html', iczpji=iczpji)
+
+@get('/dodaj_iczp')
+@cookie_required
+def dodaj_iczp(): 
+    return template_user('dodaj_iczp.html')
+
+@post('/dodaj_iczp')
+@cookie_required
+def dodaj_iczp_post(): 
+    leto = int(request.forms.get('leto'))
+    sifra_skupine = request.forms.get('skupina')
+    skupina = service.dobi_skupino_iz_sifre(sifra_skupine)
+    utez = float(request.forms.get('utez'))
+    iczp = float(request.forms.get('iczp'))
+    service.dodaj_iczp(leto, skupina.id, utez, iczp)
+
+    iczpji = service.dobi_iczp()
+    return template_user('home.html', iczpji=iczpji)
+
 @get('/skupine')
 @cookie_required
 def skupine(): 
@@ -308,8 +337,13 @@ def skupina(id_skupine):
         hiczp = service.dobi_hiczpje_drzave_sk(id_skupine, 5)
     else:
         hiczp = service.dobi_inflacije_drzave(5)
-    graf_base64 = generate_graf_indeksov(iczpji, hiczp)
-    return template_user('skupina.html', skupina= skupina, chart_base64=graf_base64, prikaz="hiczp in iczp")
+    if iczpji or hiczp: 
+      graf_base64 = generate_graf_indeksov(iczpji, hiczp)
+      return template_user('skupina.html', skupina= skupina, chart_base64=graf_base64, prikaz="hiczp in iczp", napaka='')
+    else: 
+      graf_base64 = ''
+      return template_user('skupina.html', skupina= skupina, chart_base64=graf_base64, prikaz="hiczp in iczp", napaka='Za izbrano skupino ni podatkov')
+
 
 @get('/skupinahd/<id_skupine:int>')
 @cookie_required
@@ -354,6 +388,13 @@ def skupinaleto(id_skupine, leto):
     else: 
         pie_base64 = generate_pie(utezi_podskupin)
         return template_user('skupina_leto.html', skupina=skupina, utez_iczp = utez_iczp, utez_hiczp = utez_hiczp, cene_izdelkov=cene_izdelkov, chart_base64=pie_base64)
+
+@get('/cene')
+@cookie_required
+def cene(): 
+    cene = service.dobi_cene_dto()
+    return template_user('cene.html', cene=cene)
+
 
 @get('/leta')
 @cookie_required

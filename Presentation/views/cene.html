@@ -1,0 +1,33 @@
+%rebase('base.html', naslov='cene', stran='cene')
+
+<div style="display: flex;">
+
+    <div style="flex:1;">
+      <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Leto</th>
+                <th>Ime izdelka</th>
+                <th>Ime skupine</th>  
+                <th>Šifra skupine</th> 
+                <th>Povprečna cena</th> 
+             </tr>
+        </thead>
+     
+      %for cena in cene:
+        <tr>
+           <td>{{cena.leto}}</td>           
+           <td>{{cena.ime_izdelka}}</td>
+           <td>{{cena.ime_skupine}}</td>
+           <td>{{cena.sifra_skupine}}</td>
+           <td>{{cena.cena}}</td>
+        </tr>
+      %end
+      </table>
+
+
+
+    </div>    
+
+    </div>

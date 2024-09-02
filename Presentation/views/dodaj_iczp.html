@@ -1,0 +1,22 @@
+%rebase('base.html', naslov='Indeksi cen življenjskih potrebščin', stran='iczp')
+
+<form action="{{url('/dodaj_iczp')}}" method="POST" style="width:60%">
+    <div class="form-group">
+        <label for="leto">Leto</label>
+        <input class="form-control" type="number" name="leto" >      
+    </div>
+    <div class="form-group">
+        <label for="skupina">Šifra skupine</label>
+        <textarea class="form-control" type="text" name="skupina"></textarea>      
+    </div> 
+    <div class="form-group">
+        <label for="utez">Utež</label>
+        <input class="form-control" type="number" step="0.1" name="utez" >    
+    </div> 
+    <div class="form-group">
+        <label for="iczp">Letni icžp</label>
+        <input class="form-control" type="number" step="0.1" name="iczp" >    
+    </div> 
+    <br>
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+</form>

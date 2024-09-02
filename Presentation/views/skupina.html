@@ -2,7 +2,10 @@
 
 <div class="container mt-5">
     <h1>{{ skupina.ime }}</h1>
-
+    
+    % if napaka:
+      {{ napaka }}
+    % else:
     <img src="data:image/png;base64,{{ chart_base64 }}" alt="Chart">
     
     <div class="container md-4">   
@@ -59,6 +62,6 @@
             </div>
         </div>
     </div>
-  
+  %end
 
 </div>

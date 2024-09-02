@@ -6,7 +6,7 @@ class CeneService:
     def __init__(self) -> None:
         self.repo = Repo()
 
-    def dobi_iczp(self) -> List[letni_indeksDto]: 
+    def dobi_iczp(self) -> List[iczpDto]: 
         return self.repo.dobi_letne_indekse_dto()
     
     def dobi_skupine(self) -> List[klasifikacija]: 
@@ -14,6 +14,9 @@ class CeneService:
 
     def dobi_skupino(self, id) -> klasifikacija: 
         return self.repo.dobi_skupino_iz_id(id)
+
+    def dobi_skupino_iz_sifre(self, sifra) -> klasifikacija:
+        return self.repo.dobi_skupino_iz_sifre(sifra)
 
     def dobi_iczpje_skupine(self, id) -> List[utezi_in_letni_indeks]: 
         return self.repo.dobi_utezi_in_letne_indekse_skupine(id)
@@ -50,3 +53,13 @@ class CeneService:
 
     def dobi_ceno_izdelkov_skupine(self, id_skupine, leto) -> List[cenaizdelkaDto]:
         return self.repo.dobi_ceno_izdelkov_skupine(id_skupine, leto)  
+
+    def dobi_cene_dto(self) -> List[gibanje_cenDto]: 
+        return self.repo.dobi_cene_dto()
+
+    def dodaj_iczp(self, leto, skupina_id, utez, iczp): 
+        uil = utezi_in_letni_indeks(leto = leto, skupina_id=skupina_id, utezi=utez, letni_iczp=iczp)
+        return self.repo.dodaj_utez_in_letni_indeks(uil)
+
+    def izbrisi_iczp(self, id_skupine, leto): 
+        return self.repo.izbrisi_iczp(id_skupine, leto)

@@ -1,6 +1,11 @@
 %rebase('base.html', naslov='Indeksi cen življenjskih potrebščin', stran='iczp')
 
 <!-- Indeksi cen življenjskih potrebščin -->
+ <div>
+  %if rola == 'admin': 
+   <a href="{{ url('/dodaj_iczp') }}"> Dodaj nov icžp  </a>
+  %end
+ </div>
 
 <div style="display: flex;">
 
@@ -12,7 +17,8 @@
                 <th>Leto</th>
                 <th>Ime skupine</th>
                 <th>Šifra skupine</th>  
-                <th>Letni_iczp</th>     
+                <th>Letni icžp</th> 
+                <th>Utež icžp</th> 
              </tr>
         </thead>
      
@@ -22,7 +28,10 @@
            <td>{{iczp.skupina_ime}}</td>
            <td>{{iczp.skupina_sifra}}</td>
            <td>{{iczp.letni_iczp}}</td>
-     
+           <td>{{iczp.utezi}}</td>
+           % if rola == 'admin': 
+           <td><a href="{{url('izbrisi_iczp', id_skupine=iczp.skupina_id, leto=iczp.leto )}}">Izbriši to vrstico</a></td>
+           %end
         </tr>
       %end
       </table>

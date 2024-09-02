@@ -90,12 +90,12 @@ class Repo:
         u_iczp = [utezi_in_letni_indeks.from_dict(t) for t in self.cur.fetchall()]
         return u_iczp
 
-    def dobi_letne_indekse_dto(self) -> List[letni_indeksDto]:
+    def dobi_letne_indekse_dto(self) -> List[iczpDto]:
         self.cur.execute("""
-            SELECT leto, klasifikacija.ime AS skupina_ime, klasifikacija.sifra AS skupina_sifra, letni_iczp
-            FROM utezi_in_letni_indeks JOIN klasifikacija ON skupina_id = id
+            SELECT leto, k.id AS skupina_id, k.ime AS skupina_ime, k.sifra AS skupina_sifra, utezi, letni_iczp
+            FROM utezi_in_letni_indeks JOIN klasifikacija k ON skupina_id = id
         """)
-        iczpdto = [letni_indeksDto.from_dict(t) for t in self.cur.fetchall()]
+        iczpdto = [iczpDto.from_dict(t) for t in self.cur.fetchall()]
         return iczpdto
 
     def dobi_utez_in_letni_indeks(self, leto, skupina_id)-> utezi_in_letni_indeks: 
@@ -108,6 +108,14 @@ class Repo:
 
         ul = utezi_in_letni_indeks.from_dict(self.cur.fetchone())
         return ul 
+
+    def izbrisi_iczp(self, skupina_id, leto): 
+        self.cur.execute("""
+            DELETE FROM utezi_in_letni_indeks
+            WHERE skupina_id = %s
+            AND leto = %s
+            """, (skupina_id, leto))
+        self.conn.commit()
     
     def dobi_utezi_in_letne_indekse_skupine(self, skupina_id)-> List[utezi_in_letni_indeks]:
         self.cur.execute("""
@@ -278,6 +286,16 @@ class Repo:
             VALUES (%s, %s, %s)
             """, (cena.leto, cena.id_izdelka, cena.cena))
         self.conn.commit()
+    
+    def dobi_cene_dto(self) -> List[gibanje_cenDto]: 
+        self.cur.execute("""
+            SELECT g.leto AS leto, g.id_izdelka AS id_izdelka, i.ime AS ime_izdelka , k.ime AS ime_skupine, k.sifra AS sifra_skupine, g.cena AS cena 
+            FROM gibanje_cen g
+            JOIN izdelki i ON g.id_izdelka = i.id
+            JOIN klasifikacija k ON i.id_skupine = k.id
+        """)
+        cene = [gibanje_cenDto.from_dict(t) for t in self.cur.fetchall()]
+        return cene
 
     def dobi_ceno_izdelkov_skupine(self, id_skupine, leto) -> List[cenaizdelkaDto]:
         #vrne povprecno ceno izdelkov za določeno leto, ki pripadajo izbrani skupini
