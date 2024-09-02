@@ -118,3 +118,15 @@ CREATE TABLE gibanje_cen(
     cena NUMERIC
 )
 
+GRANT CONNECT ON DATABASE sem2024_valentinam TO javnost
+
+GRANT USAGE ON SCHEMA public TO javnost;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;
+
+-- dodatne pravice za uporabo aplikacije
+GRANT INSERT ON ALL TABLES IN SCHEMA public TO javnost;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO javnost;
+
+
+GRANT DELETE ON utezi_in_letni_indeks TO javnost;
