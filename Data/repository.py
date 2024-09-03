@@ -160,6 +160,16 @@ class Repo:
         hiczpj = [hiczp.from_dict(t) for t in self.cur.fetchall()]
         return hiczpj
 
+    def dobi_hiczp_drzave(self, drzava_id) -> List[hiczpDto]: 
+        self.cur.execute("""
+            SELECT leto, k.ime AS ime_skupine, k.sifra AS sifra_skupine, utezi AS utez, harmoniziran_indeks 
+            FROM hiczp 
+            JOIN klasifikacija k ON skupina_id = id 
+            WHERE id_drzave =%s
+        """, (drzava_id,))
+        hiczpj = [hiczpDto.from_dict(t) for t in self.cur.fetchall()]
+        return hiczpj
+
     def dobi_utez_in_hiczp(self, leto, skupina_id, drzava_id) -> hiczp:
         self.cur.execute("""
             SELECT leto, skupina_id, id_drzave, utezi, harmoniziran_indeks 

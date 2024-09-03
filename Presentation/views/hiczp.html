@@ -1,0 +1,14 @@
+%rebase('base.html', naslov='hiczp', stran='hiczp')
+
+<div class="col-md-6 d-flex">
+    <div class="dropdown ms-3">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Izberi državo
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="max-height: 200px; overflow-y: auto;">
+            % for drzava in drzave: 
+                <li><a class="dropdown-item" href="{{ url('drzavahiczp', id_drzave=drzava.id) }}">{{ drzava.ime }}</a></li>
+            % end
+        </ul>
+    </div>
+</div>

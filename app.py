@@ -445,6 +445,17 @@ def drzava(id_drzave):
     inflbase64 = generate_graf_inflacija(inflacije)
     return template_user('drzava.html', drzava = drzava, inflacije = inflacije, chart_base64 = inflbase64)
 
+@get('/hiczp')
+def hiczp(): 
+    drzave = service.dobi_drzave()
+    return template_user('hiczp.html', drzave=drzave)
+
+@get('/drzavahiczp/<id_drzave:int>')
+@cookie_required
+def drzavahiczp(id_drzave): 
+    hiczpji_drzave = service.dobi_hiczp_drzave(id_drzave)
+    drzava = service.dobi_drzavo(id_drzave)
+    return template_user('hiczpdrzave.html', hiczpji_drzave=hiczpji_drzave, drzava=drzava)
 
 @post('/prijava')
 def prijava():

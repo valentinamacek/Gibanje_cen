@@ -24,9 +24,9 @@
         <a class="nav-link" href="{{url('/')}}"> ICŽP </a>
         %end
         % if stran == 'hiczp':
-        <a class="nav-link active" href="#">HICŽP</a>
+        <a class="nav-link active" href="{{ url('/hiczp') }}">HICŽP</a>
         %else:
-        <a class="nav-link" href="#">HICŽP</a>
+        <a class="nav-link" href="{{ url('/hiczp') }}">HICŽP</a>
         %end
         % if stran == 'cene':
         <a class="nav-link active" href="{{ url('/cene')}}">Cene</a>
