@@ -130,3 +130,5 @@ GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO javnost;
 
 
 GRANT DELETE ON utezi_in_letni_indeks TO javnost;
+
+GRANT UPDATE ON TABLE uporabniki TO javnost; 

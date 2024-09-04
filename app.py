@@ -258,8 +258,9 @@ def generate_pie(lst_utezi):
     velikosti = []
     labels = []
     for utez_dto in lst_utezi: 
-        velikosti.append(utez_dto.utez)
-        labels.append(utez_dto.skupina_ime)
+        if utez_dto.utez != 0.0:
+            velikosti.append(utez_dto.utez)
+            labels.append(utez_dto.skupina_ime)
     plt.pie(velikosti, labels=labels,  autopct=lambda pct: func(pct, velikosti))
     plt.title('Pomembnost podskupin v ICŽP', fontdict={'fontsize': 16, 'fontweight': 'bold'})
 
