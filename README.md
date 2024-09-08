@@ -3,7 +3,7 @@ Aplikacija Gibanje cen po letih prikazuje spremembo ravni cen v Sloveniji in  so
 
 Za primerjavo z drugimi državami se uporabljajo harmonizirani indeksi cen življenjskih potrebščin.  S pomočjo aplikacije je možno primerjati gibanje cen v Sloveniji in v sosednjih državah na nivoju posameznih skupin, prav tako pa tudi primerjati pomembnost skupin.
 # ER diagram 
-![Untitled Diagram-Page-5 drawio (1)](https://github.com/valentinamacek/Gibanje_cen/assets/104842190/71b38cff-4f8c-42d0-b6df-837f310dd0d8)
+![Untitled Diagram-Page-5 drawio (2)](https://github.com/user-attachments/assets/511b2813-fc48-4045-87b7-957fcecd3247)
 
 # Spletni dostop
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/valentinamacek/Gibanje_cen/main?urlpath=proxy%2F8080)
