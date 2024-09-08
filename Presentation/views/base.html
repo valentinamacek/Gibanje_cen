@@ -19,34 +19,34 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
         % if stran == 'iczp':
-          <a class="nav-link active" href="{{url('/')}}">ICŽP</a>
+          <a class="nav-link active" href="{{url('index')}}">ICŽP</a>
         %else:
-        <a class="nav-link" href="{{url('/')}}"> ICŽP </a>
+        <a class="nav-link" href="{{url('index')}}"> ICŽP </a>
         %end
         % if stran == 'hiczp':
-        <a class="nav-link active" href="{{ url('/hiczp') }}">HICŽP</a>
+        <a class="nav-link active" href="{{ url('hiczp') }}">HICŽP</a>
         %else:
-        <a class="nav-link" href="{{ url('/hiczp') }}">HICŽP</a>
+        <a class="nav-link" href="{{ url('hiczp') }}">HICŽP</a>
         %end
         % if stran == 'cene':
-        <a class="nav-link active" href="{{ url('/cene')}}">Cene</a>
+        <a class="nav-link active" href="{{ url('cene')}}">Cene</a>
         %else:
-        <a class="nav-link" href="{{ url('/cene')}}">Cene</a>
+        <a class="nav-link" href="{{ url('cene')}}">Cene</a>
         %end
         % if stran == 'skupine':
-        <a class="nav-link active" href="{{ url('/skupine')}}">Skupine</a>
+        <a class="nav-link active" href="{{ url('skupine')}}">Skupine</a>
         %else:
-        <a class="nav-link" href="{{ url('/skupine')}}">Skupine</a>
+        <a class="nav-link" href="{{ url('skupine')}}">Skupine</a>
         %end
         % if stran == 'leta':
-        <a class="nav-link active" href="{{ url('/leta')}}">Leta</a>
+        <a class="nav-link active" href="{{ url('leta')}}">Leta</a>
         %else:
-        <a class="nav-link" href="{{ url('/leta')}}">Leta</a>
+        <a class="nav-link" href="{{ url('leta')}}">Leta</a>
         %end
         % if stran == 'drzave':
-        <a class="nav-link active" href="{{ url('/drzave') }}">Države</a>
+        <a class="nav-link active" href="{{ url('drzave') }}">Države</a>
         %else:
-        <a class="nav-link" href="{{ url('/drzave') }}">Države</a>
+        <a class="nav-link" href="{{ url('drzave') }}">Države</a>
         %end
        </div>
       </div>

@@ -351,7 +351,7 @@ def skupina(id_skupine):
 def skupinahd(id_skupine): 
     skupina = service.dobi_skupino(id_skupine)
     hdgraf = generate_grafdrzav(skupina, 'hiczp')
-    return template_user('skupina.html', skupina = skupina, chart_base64=hdgraf, prikaz="hiczp drzave")
+    return template_user('skupina.html', skupina = skupina, chart_base64=hdgraf, prikaz="hiczp drzave", napaka="")
 
 @get('/skupinau/<id_skupine:int>')
 @cookie_required
@@ -361,14 +361,14 @@ def skupinau(id_skupine):
     iczpji = service.dobi_iczpje_skupine(id_skupine)
     hiczp = service.dobi_hiczpje_drzave_sk(id_skupine, 5)
     graf_base64 = generate_graf_utezi(iczpji, hiczp)
-    return template_user('skupina.html', skupina= skupina, chart_base64=graf_base64, prikaz="utezi")
+    return template_user('skupina.html', skupina= skupina, chart_base64=graf_base64, prikaz="utezi", napaka="")
         
 @get('/skupinahu/<id_skupine:int>')
 @cookie_required
 def skupinahu(id_skupine): 
     skupina = service.dobi_skupino(id_skupine)
     hdgraf = generate_grafdrzav(skupina, 'utezi')
-    return template_user('skupina.html', skupina = skupina, chart_base64=hdgraf, prikaz="utezi drzave")
+    return template_user('skupina.html', skupina = skupina, chart_base64=hdgraf, prikaz="utezi drzave", napaka="")
 
 
 
@@ -416,16 +416,16 @@ def leta_post():
         drzave = service.dobi_drzave()
         return template_user('leto_po_drzavah.html', leto=leto, drzave=drzave)
         
-@get('/leto_drzave/<leto:int>')
-@cookie_required
-def leto_drzave(leto): 
-    drzave = service.dobi_drzave()
-    return template_user('leto_po_drzavah.html', leto=leto, drzave=drzave)
+# @get('/leto_drzave/<leto:int>')
+# @cookie_required
+# def leto_drzave(leto): 
+#     drzave = service.dobi_drzave()
+#     return template_user('leto_po_drzavah.html', leto=leto, drzave=drzave)
         
 
 @post('/leto_drzave')
 @cookie_required
-def leto_drzave_post(): 
+def leto_drzave(): 
     leto = int(request.forms.get('leto'))
     id_list = request.forms.getall('countries')
     id_drzav = [int(id) for id in id_list]
@@ -474,14 +474,8 @@ def prijava():
     if prijava:
         response.set_cookie("uporabnik", username)
         response.set_cookie("rola", prijava.role)
-        
-        # redirect v večino primerov izgleda ne deluje
-        redirect(url('/'))
 
-        # Uporabimo kar template, kot v sami "index" funkciji
-
-        # transakcije = service.dobi_transakcije()        
-        # return template('transakcije.html', transakcije = transakcije)
+        redirect(url('index'))
         
     else:
         return template("prijava.html", uporabnik=None, rola=None, napaka="Neuspešna prijava. Napačno geslo ali uporabniško ime.")

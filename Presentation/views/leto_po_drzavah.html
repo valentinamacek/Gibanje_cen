@@ -2,7 +2,7 @@
 
 Prikaži hicžp za naslednje države: 
 
-<form action="{{url('/leto_drzave')}}" method="POST" style="width:60%">
+<form action="{{url('leto_drzave')}}" method="POST" style="width:60%">
 % for drzava in drzave:
   <div class="form-group">
     <input type="checkbox" id="Country{{ drzava.id }}" name="countries" value="{{ drzava.id }}">
