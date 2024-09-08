@@ -306,7 +306,8 @@ def izbrisi_iczp(id_skupine, leto):
 @get('/dodaj_iczp')
 @cookie_required
 def dodaj_iczp(): 
-    return template_user('dodaj_iczp.html')
+    skupine = service.dobi_skupine()
+    return template_user('dodaj_iczp.html', skupine=skupine)
 
 @post('/dodaj_iczp')
 @cookie_required

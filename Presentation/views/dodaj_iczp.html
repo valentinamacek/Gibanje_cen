@@ -7,7 +7,12 @@
     </div>
     <div class="form-group">
         <label for="skupina">Šifra skupine</label>
-        <textarea class="form-control" type="text" name="skupina"></textarea>      
+        <select class="form-select" name="skupina"  aria-placeholder="Izberi šifro">
+        
+            % for skupina in skupine:
+            <option value="{{ skupina.sifra }}">{{ skupina.sifra }}</option>
+            %end        
+        </select>      
     </div> 
     <div class="form-group">
         <label for="utez">Utež</label>
